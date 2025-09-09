@@ -5,6 +5,7 @@
 package com.base.basetomee.usuario.infraestructura;
 
 import com.base.basetomee.usuario.dominio.usuario;
+import com.base.basetomee.util.Result;
 import java.util.List;
 
 /**
@@ -13,8 +14,9 @@ import java.util.List;
  */
 public interface UsuarioRepoInt {
     
-    public boolean registrar(usuario bean);
-    public usuario get(String id);
-    public usuario update(usuario bean);
-    public List<usuario> listar();   
+    public Result<usuario> registrar(usuario bean);
+    public Result<usuario> read(String id);
+    public Result<usuario> update(usuario bean);
+    public Result<List<usuario>> listar();  
+    public Result<String> eliminar(String id);
 }
