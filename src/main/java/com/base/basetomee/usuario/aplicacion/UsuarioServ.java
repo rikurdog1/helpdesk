@@ -5,8 +5,10 @@
 package com.base.basetomee.usuario.aplicacion;
 
 import com.base.basetomee.usuario.dominio.usuario;
+import com.base.basetomee.usuario.infraestructura.UsuarioRepoInt;
 import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import java.time.LocalDateTime;
@@ -23,13 +25,16 @@ import org.eclipse.microprofile.faulttolerance.Asynchronous;
 @ApplicationScoped
 public class UsuarioServ implements UsuarioServInt{
   
+    @Inject
+    UsuarioRepoInt userRepo;
+    
     @Override
-    public Result<String> regNuevoUsuario(usuario bean) {
+    public Result<usuario> regNuevoUsuario(usuario bean) {
         
         log.debug("Registrando un nuevo usuario.");  
         log.debug("bean: " + bean.id());  
         
-        return new Result<String>().OK("true");
+        return  userRepo.registrar(usuario.nuevo(bean));    
     }
 
     @Override

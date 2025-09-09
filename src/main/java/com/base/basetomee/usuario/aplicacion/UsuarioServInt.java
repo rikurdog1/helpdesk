@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  */
 public interface UsuarioServInt {
     
-    public Result<String> regNuevoUsuario(usuario bean);
+    public Result<usuario> regNuevoUsuario(usuario bean);
     public Result<usuario> getUsuario(String id);
     public Result<List<usuario>> getAll();
     public Result<String> modificar(usuario bean);

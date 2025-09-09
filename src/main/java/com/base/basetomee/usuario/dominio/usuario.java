@@ -61,9 +61,7 @@ public record usuario(@Schema(description = "Id del usuario.", required = true, 
                       @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")        
                       LocalDateTime actualizacion) {
     
-    public usuario nuevo(usuario bean){
-    
-    return new usuario(bean.id, bean.clave, bean.nombre, bean.apellido, bean.email, bean.celular, "A", bean.rol, LocalDateTime.now(), LocalDateTime.now());}
-
-
+    static public usuario nuevo(usuario bean){
+        return new usuario(bean.id, bean.clave, bean.nombre, bean.apellido, bean.email, bean.celular, "A", bean.rol, LocalDateTime.now(), LocalDateTime.now());
+    }
 }
