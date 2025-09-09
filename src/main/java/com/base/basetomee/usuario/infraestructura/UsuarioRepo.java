@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.extern.log4j.Log4j2;
@@ -85,12 +86,65 @@ public class UsuarioRepo implements UsuarioRepoInt{
 
     @Override
     public Result<usuario> update(usuario bean) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        String sql = "UPDATE OCIB.DEMANDA SET MO_PACTO = ?, ST_DEMANDA = ? WHERE CO_DEMANDA = ?";
+             
+        try(final Connection con = bd.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql))
+        {                                    
+            pstmt.setString(1, bean.id());
+            pstmt.setString(2, bean.nombre());
+            pstmt.setString(3, bean.apellido());
+            pstmt.setString(4, bean.clave());
+            pstmt.setString(5, bean.celular());
+            pstmt.setString(6, bean.email());
+            pstmt.setString(7, bean.rol());
+            pstmt.setString(8, bean.estado());         
+            pstmt.setTimestamp(9, java.sql.Timestamp.valueOf(bean.creacion()));
+            pstmt.setTimestamp(10, java.sql.Timestamp.valueOf(bean.actualizacion()));
+                   
+            pstmt.executeUpdate(); 
+            
+            return new Result<usuario>().OK(bean);
+                               
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new Result<usuario>().Fail(e.getMessage());
+        }
     }
 
     @Override
     public Result<List<usuario>> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = """
+                    SELECT I.* 
+                    FROM OCIB.DEMANDA I 
+                    WHERE ST_DEMANDA IN ('R', 'P') AND CO_JORNADA = ? AND CO_MONEDA = ? 
+                    AND CO_INSTRUMENTO = ?  AND TC_CAMBIO_DEMANDA = ? AND IN_CONDICION = ? 
+                    AND CO_INSTITUCION != ?            
+                    AND TO_CHAR(FE_DEMANDA, 'YYYYMMDDHH24MISS') <= ? 
+                    ORDER BY FE_DEMANDA
+                    """;
+        
+        List<usuario> beans = new ArrayList<>();                     
+               
+        try(final Connection con = bd.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);)
+        {                    
+             //BigDecimal b = new BigDecimal(d, MathContext.DECIMAL64);                 
+               
+            ResultSet orset = st.executeQuery();
+            
+            while (orset.next()) {                 
+               
+                beans.add(parse(orset));
+            }
+        
+            return new Result<List<usuario>>().OK(beans);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage());      
+            return new Result<List<usuario>>().Fail(e.getMessage());
+        } 
     }
 
     @Override

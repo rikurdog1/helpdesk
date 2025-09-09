@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 
+
 /**
  *
  * @author rikurdog31
@@ -59,4 +60,10 @@ public record usuario(@Schema(description = "Id del usuario.", required = true, 
                       @JsonbProperty("actualizacion")
                       @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")        
                       LocalDateTime actualizacion) {
+    
+    public usuario nuevo(usuario bean){
+    
+    return new usuario(bean.id, bean.clave, bean.nombre, bean.apellido, bean.email, bean.celular, "A", bean.rol, LocalDateTime.now(), LocalDateTime.now());}
+
+
 }
