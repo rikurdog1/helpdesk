@@ -24,7 +24,7 @@ public class JsonbExceptionExceptionMapper implements ExceptionMapper<JsonbExcep
     @Override
     public Response toResponse(JsonbException e) {
         ProblemDetails ae = preparMensaje(e);
-        log.info("Desde el error de JsonParsingException");
+        log.error("Desde el error de JsonParsingException");
         return Response.status(ae.getStatus()).entity(ae).type(MediaType.APPLICATION_JSON).build();
     }
     

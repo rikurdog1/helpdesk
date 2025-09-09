@@ -4,6 +4,7 @@
  */
 package com.base.basetomee.usuario.infraestructura;
 
+import com.base.basetomee.exception.ProblemDetails;
 import com.base.basetomee.usuario.aplicacion.UsuarioServInt;
 import com.base.basetomee.usuario.dominio.user;
 import com.base.basetomee.usuario.dominio.usuario;
@@ -19,7 +20,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.concurrent.ExecutionException;
-
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -51,10 +51,13 @@ public class UsuarioController {
     @Path("/get")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    @APIResponse(description = "Notificar la operaciones.",
+     
+    @APIResponse(responseCode = "200", description = "Usuario encontrado.",
              content = @Content(mediaType = "application/json",
                                 schema = @Schema(implementation = usuario.class)))
+    @APIResponse(responseCode = "404", description = "Usuario no encontrado.")
     @APIResponse(responseCode = "409", description = "Error de validación datos")
+    @Operation(summary = "Buscar usuario.", description = "Permite busar un usuario.")
     public Response getUsuario() {
         log.error("creo que tengo un error.");
                
@@ -65,11 +68,14 @@ public class UsuarioController {
     @POST()
     @Path("/set")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @APIResponse(description = "Respuestas posible del registro de usuario.",
+    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+    @APIResponse(responseCode = "200", description = "Respuestas posible del registro de usuario.",
              content = @Content(mediaType = "application/json",
-                                schema = @Schema(implementation = usuario.class)))  
-    @Operation(summary = "Registra un usuario.")
+                                schema = @Schema(implementation = usuario.class))) 
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+             content = @Content(mediaType = "application/problem+json",
+                                schema = @Schema(implementation = ProblemDetails.class))) 
+    @Operation(summary = "Registrar usuario.", description = "Permite registrar un nuevo usuario.")
     public Response getUsuario(@RequestBody(description = "Datos del usuario", required = true, 
                                content = @Content(schema = @Schema(name = "usuarioRecord",  type = SchemaType.OBJECT, implementation = usuario.class)))
                                @Valid usuario bean) {

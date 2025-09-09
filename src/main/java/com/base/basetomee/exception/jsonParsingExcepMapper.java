@@ -22,7 +22,7 @@ public class jsonParsingExcepMapper implements ExceptionMapper<JsonParsingExcept
     @Override
     public Response toResponse(JsonParsingException e) {
         ProblemDetails ae = preparMensaje(e);
-        log.info("Desde el error de JsonParsingException");
+        log.error("Desde el error de JsonParsingException");
         return Response.status(ae.getStatus()).entity(ae).type(MediaType.APPLICATION_JSON).build();
     }
    
