@@ -15,7 +15,7 @@ import java.util.List;
 public interface UsuarioRepoInt {
     
     public Result<usuario> registrar(usuario bean);
-    public Result<usuario> read(String id);
+    public Result<usuario> read(int id);
     public Result<usuario> update(usuario bean);
     public Result<List<usuario>> listar();  
     public Result<String> eliminar(String id);

@@ -21,9 +21,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
  */
 
 @Schema(name = "usuarioRecord", description = "Datos del Usuario.")
-public record usuario(@Schema(description = "Id del usuario.", required = true, example = "V1000001", hidden = false)
+public record usuario(@Schema(description = "Id del usuario.", required = true, example = "1", hidden = false)
                       @JsonbProperty("id")
-                      String id, 
+                      int id, 
                       @Schema(description = "Clave del usuario.", required = true, example = "EEW#!$rt3432", hidden = false)
                       @Size(min = 6, max = 20, message = "Clace tamaño incorrecto.")
                       @Pattern(regexp ="^(?=.*[a-z]{2})(?=.*[A-Z]{2})(?=.*\\d{2})(?=.*[$%&#?_!]{2})[\\w\\d$%&#?_!]{6,20}$",  message = "Clave no permitida '${validatedValue}, debe contener dos mayúsculas, dos minúsculas, dos dígitos y dos caracteres $%&#?_!")

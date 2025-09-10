@@ -48,7 +48,7 @@ public class UsuarioController {
     UsuarioServInt serv;
     
     @GET()
-    @Path("/get")
+    @Path("/get/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
      
@@ -58,10 +58,10 @@ public class UsuarioController {
     @APIResponse(responseCode = "404", description = "Usuario no encontrado.")
     @APIResponse(responseCode = "409", description = "Error de validación datos")
     @Operation(summary = "Buscar usuario.", description = "Permite busar un usuario.")
-    public Response getUsuario() {
+    public Response getUsuario(String id) {
         log.error("creo que tengo un error.");
                
-        usuario usuari = serv.getUsuario("").get();
+        usuario usuari = serv.getUsuario(1).get();
         return  Response.ok(usuari).type(MediaType.APPLICATION_JSON).build() ;
     }
     
@@ -86,7 +86,7 @@ public class UsuarioController {
         us.setNombre("ricardo");
         us.setApellido("Martinez");
         
-        usuario usuari = serv.getUsuario("").get();
+        usuario usuari = serv.getUsuario(1).get();
        
         return  Response.ok(usuari).type(MediaType.APPLICATION_JSON).build();
     }
@@ -98,7 +98,7 @@ public class UsuarioController {
     public Response getFuture() {
         log.debug("creo que tengo un Debug.");
                
-        usuario usuari = serv.getUsuario("").get();
+        usuario usuari = serv.getUsuario(1).get();
         //return CompletableFuture.supplyAsync(()-> serv.getUsuario("").get());
         //return new AsyncResult<>(serv.getUsuario("").get());
         //return  (Future<usuario>) Response.ok(usuari).type(MediaType.APPLICATION_JSON).build() ;

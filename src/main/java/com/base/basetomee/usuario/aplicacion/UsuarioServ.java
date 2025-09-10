@@ -16,6 +16,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import org.eclipse.microprofile.faulttolerance.Asynchronous;
+import org.apache.commons.lang3.RandomStringUtils;
+
 
 /**
  *
@@ -33,13 +35,14 @@ public class UsuarioServ implements UsuarioServInt{
         
         log.debug("Registrando un nuevo usuario.");  
         log.debug("bean: " + bean.id());  
-        
+          
         return  userRepo.registrar(usuario.nuevo(bean));    
     }
 
     @Override
-    public Result<usuario> getUsuario(String id) {
-        return new Result<usuario>().OK(new usuario("caracas", "W#$r3432", "rrrrrr", "mmmmmm", "rmir@gmail.com", "V10123456", "A", "ADMIN", LocalDateTime.now(), LocalDateTime.now()));
+    public Result<usuario> getUsuario(int id) {
+            log.debug(RandomStringUtils.randomAlphabetic(6));         
+        return userRepo.read(id);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class UsuarioRepo implements UsuarioRepoInt{
         try(final Connection con = bd.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql))
         {
-            pstmt.setString(1, bean.id());
+            pstmt.setInt(1, bean.id());
             pstmt.setString(2, bean.nombre());
             pstmt.setString(3, bean.apellido());
             pstmt.setString(4, bean.clave());
@@ -62,14 +62,14 @@ public class UsuarioRepo implements UsuarioRepoInt{
     }
 
     @Override
-    public Result<usuario> read(String id) {
-        String sql = "SELECT I.* FROM OCIB.DEMANDA I WHERE I.CO_DEMANDA = ?";
+    public Result<usuario> read(int id) {
+        String sql = "SELECT I.* FROM PUBLIC.USERS I WHERE I.ID = ?";
         usuario bean = null;
         
         try(final Connection con = bd.getConnection();
             PreparedStatement st = con.prepareStatement(sql);)
         {
-            st.setString(1, id);
+            st.setInt(1, id);
             ResultSet orset = st.executeQuery();
             
             while (orset.next()) {                                                
@@ -92,7 +92,7 @@ public class UsuarioRepo implements UsuarioRepoInt{
         try(final Connection con = bd.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql))
         {                                    
-            pstmt.setString(1, bean.id());
+            pstmt.setInt(1, bean.id());
             pstmt.setString(2, bean.nombre());
             pstmt.setString(3, bean.apellido());
             pstmt.setString(4, bean.clave());
@@ -155,10 +155,17 @@ public class UsuarioRepo implements UsuarioRepoInt{
     
     protected usuario parse(ResultSet orset) throws SQLException{
      
+        /*
         usuario bean = new usuario(orset.getString("CO_DEMANDA"), orset.getString("CO_DEMANDA"), orset.getString("CO_DEMANDA"),
                                    orset.getString("CO_DEMANDA"), orset.getString("CO_DEMANDA"), orset.getString("CO_DEMANDA"),
                                    orset.getString("CO_DEMANDA"), orset.getString("CO_DEMANDA"),
                                    orset.getTimestamp("FE_VALOR").toLocalDateTime(), orset.getTimestamp("FE_VALOR").toLocalDateTime());
+        */                          
+        
+        usuario bean = new usuario(orset.getInt("ID"), orset.getString("NAME"), null,
+                                   null, null, null,
+                                   null, null,
+                                   null, null);
                              
         return bean;  
      }
