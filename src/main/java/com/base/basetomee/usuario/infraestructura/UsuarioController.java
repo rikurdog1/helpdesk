@@ -58,10 +58,10 @@ public class UsuarioController {
     @APIResponse(responseCode = "404", description = "Usuario no encontrado.")
     @APIResponse(responseCode = "409", description = "Error de validación datos")
     @Operation(summary = "Buscar usuario.", description = "Permite busar un usuario.")
-    public Response getUsuario(String id) {
+    public Response getUsuario(@PathParam("id") int id) {
         log.error("creo que tengo un error.");
                
-        usuario usuari = serv.getUsuario(1).get();
+        usuario usuari = serv.getUsuario(id).get();
         return  Response.ok(usuari).type(MediaType.APPLICATION_JSON).build() ;
     }
     
