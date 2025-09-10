@@ -30,15 +30,17 @@ public class UsuarioRepo implements UsuarioRepoInt{
     @Override
     public Result<usuario> registrar(usuario bean) {
         
-        String sql = "INSERT INTO OCIB.DEMANDA (CO_DEMANDA, CO_JORNADA, CO_INSTITUCION, CO_MONEDA, FE_DEMANDA, MO_DEMANDA, MO_PACTO, ST_DEMANDA, TC_CAMBIO_DEMANDA, CO_USUARIO, "
-                + "IN_CONDICION, CO_INSTRUMENTO, TI_PACTO, CO_INST_OFE, FE_VALOR, MO_USD) "
-                + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+        String sql = """
+                    INSERT INTO PUBLIC.USERS (ID, NAME) 
+                    VALUES(?,?) 
+                """;
         
         try(final Connection con = bd.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql))
         {
             pstmt.setInt(1, bean.id());
             pstmt.setString(2, bean.nombre());
+            /*
             pstmt.setString(3, bean.apellido());
             pstmt.setString(4, bean.clave());
             pstmt.setString(5, bean.celular());
@@ -47,11 +49,12 @@ public class UsuarioRepo implements UsuarioRepoInt{
             pstmt.setString(8, bean.estado());         
             pstmt.setTimestamp(9, java.sql.Timestamp.valueOf(bean.creacion()));
             pstmt.setTimestamp(10, java.sql.Timestamp.valueOf(bean.actualizacion()));
-            
+            */
             //pstmt.setDate(15, java.sql.Date.valueOf(demanda.getFevalor()));
             //pstmt.setBigDecimal(16, demanda.getMtousd());
             
             int affectedRows = pstmt.executeUpdate();
+             con.commit();
             
             return new Result<usuario>().OK(bean);
             
@@ -87,7 +90,7 @@ public class UsuarioRepo implements UsuarioRepoInt{
     @Override
     public Result<usuario> update(usuario bean) {
         
-        String sql = "UPDATE OCIB.DEMANDA SET MO_PACTO = ?, ST_DEMANDA = ? WHERE CO_DEMANDA = ?";
+        String sql = "UPDATE PUBLIC.USERS SET NAME = ?, WHERE ID = ?";
              
         try(final Connection con = bd.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql))

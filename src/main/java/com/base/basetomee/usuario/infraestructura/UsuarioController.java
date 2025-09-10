@@ -76,17 +76,13 @@ public class UsuarioController {
              content = @Content(mediaType = "application/problem+json",
                                 schema = @Schema(implementation = ProblemDetails.class))) 
     @Operation(summary = "Registrar usuario.", description = "Permite registrar un nuevo usuario.")
-    public Response getUsuario(@RequestBody(description = "Datos del usuario", required = true, 
+    public Response settUsuario(@RequestBody(description = "Datos del usuario", required = true, 
                                content = @Content(schema = @Schema(name = "usuarioRecord",  type = SchemaType.OBJECT, implementation = usuario.class)))
                                @Valid usuario bean) {
         
         log.error(bean.id());
-        
-        user us = new user();
-        us.setNombre("ricardo");
-        us.setApellido("Martinez");
-        
-        usuario usuari = serv.getUsuario(1).get();
+           
+        usuario usuari = serv.regNuevoUsuario(bean).get();
        
         return  Response.ok(usuari).type(MediaType.APPLICATION_JSON).build();
     }
