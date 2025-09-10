@@ -120,12 +120,8 @@ public class UsuarioRepo implements UsuarioRepoInt{
     public Result<List<usuario>> listar() {
         String sql = """
                     SELECT I.* 
-                    FROM OCIB.DEMANDA I 
-                    WHERE ST_DEMANDA IN ('R', 'P') AND CO_JORNADA = ? AND CO_MONEDA = ? 
-                    AND CO_INSTRUMENTO = ?  AND TC_CAMBIO_DEMANDA = ? AND IN_CONDICION = ? 
-                    AND CO_INSTITUCION != ?            
-                    AND TO_CHAR(FE_DEMANDA, 'YYYYMMDDHH24MISS') <= ? 
-                    ORDER BY FE_DEMANDA
+                    FROM PUBLIC.USERS I                     
+                    ORDER BY I.ID
                     """;
         
         List<usuario> beans = new ArrayList<>();                     

@@ -11,7 +11,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +33,7 @@ public class UsuarioServ implements UsuarioServInt{
     public Result<usuario> regNuevoUsuario(usuario bean) {
         
         log.debug("Registrando un nuevo usuario.");  
-        log.debug("bean: " + bean.id());  
+        log.debug("Código del Usuario: " + bean.id());  
           
         return  userRepo.registrar(usuario.nuevo(bean));    
     }
@@ -46,10 +45,8 @@ public class UsuarioServ implements UsuarioServInt{
     }
 
     @Override
-    public Result<List<usuario>> getAll() {
-        List<usuario> list = List.of();
-        
-        return new Result<List<usuario>>().OK(list);
+    public Result<List<usuario>> getAll() {   
+        return userRepo.listar();
     }
 
     @Override

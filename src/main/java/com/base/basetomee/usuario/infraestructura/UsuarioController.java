@@ -6,7 +6,6 @@ package com.base.basetomee.usuario.infraestructura;
 
 import com.base.basetomee.exception.ProblemDetails;
 import com.base.basetomee.usuario.aplicacion.UsuarioServInt;
-import com.base.basetomee.usuario.dominio.user;
 import com.base.basetomee.usuario.dominio.usuario;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -66,7 +65,7 @@ public class UsuarioController {
     }
     
     @POST()
-    @Path("/set")
+    @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
     @APIResponse(responseCode = "200", description = "Respuestas posible del registro de usuario.",
@@ -88,17 +87,19 @@ public class UsuarioController {
     }
     
     @GET()
-    @Path("/asincrona")
+    @Path("/listar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFuture() {
+    public Response listar() {
         log.debug("creo que tengo un Debug.");
                
-        usuario usuari = serv.getUsuario(1).get();
+        var resp = serv.getAll();
+        
+        return resp.IsSuccess() ? Response.ok(resp.get()).type(MediaType.APPLICATION_JSON).build() : Response.ok(resp.getMsj()).type(MediaType.APPLICATION_JSON).build();
         //return CompletableFuture.supplyAsync(()-> serv.getUsuario("").get());
         //return new AsyncResult<>(serv.getUsuario("").get());
         //return  (Future<usuario>) Response.ok(usuari).type(MediaType.APPLICATION_JSON).build() ;
-        return  Response.ok(usuari).type(MediaType.APPLICATION_JSON).build();
+        //return  Response.ok(usuari).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
