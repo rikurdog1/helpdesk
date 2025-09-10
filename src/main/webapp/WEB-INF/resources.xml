@@ -7,7 +7,7 @@
       
     <Resource id="jdbc/PostgresDB" type="javax.sql.DataSource">
         JdbcDriver = org.postgresql.Driver
-        JdbcUrl = jdbc:postgresql://192.168.120.101:5432/helpdesk
+        JdbcUrl = jdbc:postgresql://localhost:5432/helpdesk
         UserName = postgres
         Password = root
         JtaManaged = true

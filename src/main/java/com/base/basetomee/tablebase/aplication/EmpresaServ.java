@@ -4,17 +4,21 @@ import jakarta.inject.Inject;
 
 import com.base.basetomee.tablebase.dominio.EmpresaRecord;
 import com.base.basetomee.util.Result;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class EmpresaServ implements EmpresasServInt {
+    private static final Logger log = LogManager.getLogger(EmpresaServ.class);
     @Inject
     EmpresaInt empresaRepo;
 
 
     @Override
     public Result<EmpresaRecord> nuevo(EmpresaRecord bean) {
-        System.out.println("11111");
+        log.debug("Se estaquedandto en EmpresaServ");
+        System.out.println();
         return empresaRepo.registrar(bean);
 
     }

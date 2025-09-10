@@ -52,7 +52,7 @@ public class EmpresaContorller {
 
     public Response getUsuario(@Valid EmpresaRecord bean) {
 
-        log.error(bean.co_emp());
+        log.debug(bean.co_emp());
 
         EmpresaRecord empresaRecord = services.registrar(bean).get();
 
