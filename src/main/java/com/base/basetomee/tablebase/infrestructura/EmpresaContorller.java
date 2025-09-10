@@ -36,9 +36,20 @@ public class EmpresaContorller {
     EmpresaInt services;
 
     @POST()
-    @Path("/set")
+    @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+    @APIResponse(responseCode = "200", description = "Respuesta Exitosa del registro de Empresa.",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = EmpresaRecord.class)))
+
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetails.class)))
+
+    @Operation(summary = "Registrar Empresa.", description = "Permite registrar una nueva empresa.")
+
     public Response getUsuario(@Valid EmpresaRecord bean) {
 
         log.error(bean.co_emp());

@@ -14,6 +14,7 @@ public class EmpresaServ implements EmpresasServInt {
 
     @Override
     public Result<EmpresaRecord> nuevo(EmpresaRecord bean) {
+        System.out.println("11111");
         return empresaRepo.registrar(bean);
 
     }
