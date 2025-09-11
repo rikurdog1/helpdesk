@@ -1,11 +1,8 @@
 package com.base.basetomee.tablebase.infrestructura;
-
-
 import com.base.basetomee.exception.ProblemDetails;
-import com.base.basetomee.tablebase.aplication.EmpresasServInt;
+import com.base.basetomee.tablebase.aplication.DepartamentoServInt;
+import com.base.basetomee.tablebase.dominio.DepartamentoRecord;
 import com.base.basetomee.tablebase.dominio.EmpresaRecord;
-import com.base.basetomee.usuario.dominio.user;
-import com.base.basetomee.usuario.dominio.usuario;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -27,38 +24,38 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Log4j2
-@Path("/Empresas")
+@Path("/Departamento")
 @ApplicationScoped
 @Tag(name = "Servicios Gestion de Tablas Base ")
 @OpenAPIDefinition(info = @Info(title = "Servicios Gestion de Tablas Base.", version = "1.0"))
-public class EmpresaContorller {
+public class DepartamentoController {
 
-    @Inject
-    EmpresasServInt services;
+        @Inject
+        DepartamentoServInt services;
 
-    @POST()
-    @Path("/registrar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+        @POST()
+        @Path("/registrar")
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
 
-    @APIResponse(responseCode = "200", description = "Respuesta Exitosa del registro de Empresa.",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = EmpresaRecord.class)))
+        @APIResponse(responseCode = "200", description = "Respuesta Exitosa del registro de Departamento.",
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = EmpresaRecord.class)))
 
-    @APIResponse(responseCode = "409", description = "Error de validación datos.",
-            content = @Content(mediaType = "application/problem+json",
-                    schema = @Schema(implementation = ProblemDetails.class)))
+        @APIResponse(responseCode = "409", description = "Error de validación datos.",
+                content = @Content(mediaType = "application/problem+json",
+                        schema = @Schema(implementation = ProblemDetails.class)))
 
-    @Operation(summary = "Registrar Empresa.", description = "Permite registrar una nueva empresa.")
+        @Operation(summary = "Registrar Departamento.", description = "Permite registrar un nuevo Departamento.")
 
-    public Response getEmpresa(@Valid EmpresaRecord bean) {
+        public Response getDPT(@Valid DepartamentoRecord bean) {
 
-        log.debug(bean.co_emp());
+            log.debug(bean.co_emp());
 
-        EmpresaRecord empresaRecord = services.nuevo(bean).get();
+            DepartamentoRecord departamentoRecord = services.nuevo(bean).get();
 
-        return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
-    }
+            return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
+        }
 
 
 

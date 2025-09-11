@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
-import java.util.Random;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @Schema(name = "empresaRecord", description = "Datos de Empresa.")
@@ -38,6 +36,7 @@ public record EmpresaRecord(
         String st_estado
         ) {
 
+    //Metodo para generar un codigo randon para Empresa
     static public EmpresaRecord GeneradorCodEmpresa(EmpresaRecord bean){
         var a = RandomStringUtils.randomNumeric(6);
         log.debug(a);
