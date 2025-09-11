@@ -1,4 +1,4 @@
-package com.base.basetomee.tablebase.dominio;
+    package com.base.basetomee.tablebase.dominio;
 import jakarta.json.bind.annotation.JsonbProperty;
 
 

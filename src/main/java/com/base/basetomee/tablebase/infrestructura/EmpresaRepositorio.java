@@ -31,6 +31,7 @@ public class EmpresaRepositorio implements EmpresaInt {
             pstmt.setString(3, bean.st_estado());
 
             int affectedRows = pstmt.executeUpdate();
+            con.commit();
 
             return new Result<EmpresaRecord>().OK(bean);
 

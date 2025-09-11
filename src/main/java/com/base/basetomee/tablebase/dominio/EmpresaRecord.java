@@ -5,9 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import java.util.Random;
+import org.apache.commons.lang3.RandomStringUtils;
+
 @Schema(name = "empresaRecord", description = "Datos de Empresa.")
+@Log4j2
 
 public record EmpresaRecord(
         //Anotaciones para validar Codigo de Empresa
@@ -32,5 +37,14 @@ public record EmpresaRecord(
         @JsonbProperty("st_estado")
         String st_estado
         ) {
+
+    static public EmpresaRecord GeneradorCodEmpresa(EmpresaRecord bean){
+        var a = RandomStringUtils.randomNumeric(6);
+        log.debug(a);
+        return new EmpresaRecord(
+                a , bean.nb_emp,"ACTIVO"
+        );
+
+    }
 
 }
