@@ -60,6 +60,29 @@ public class EmpresaContorller {
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
+    @POST()
+    @Path("/modificar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+    @APIResponse(responseCode = "200", description = "Modificacion Exitosa, de Empresa.",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = EmpresaRecord.class)))
+
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetails.class)))
+
+    @Operation(summary = "Actualizar Empresa.", description = "Permite Actualizar una empresa existente.")
+
+    public Response UpdateEmpresa(@Valid EmpresaRecord bean){
+        log.debug(bean.co_emp());
+
+        EmpresaRecord empresaRecord = services.modificar(bean).get();
+        return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
+
+    }
+
 
 
 }

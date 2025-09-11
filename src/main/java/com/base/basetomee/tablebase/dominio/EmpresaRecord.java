@@ -34,6 +34,8 @@ public record EmpresaRecord(
         @NotNull(message = "Estado: no puede quedar vacio.")
         @JsonbProperty("st_estado")
         String st_estado
+
+
         ) {
 
     //Metodo para generar un codigo randon para Empresa
@@ -44,6 +46,13 @@ public record EmpresaRecord(
                 a , bean.nb_emp,"ACTIVO"
         );
 
+    }
+
+    static public EmpresaRecord DataUpdate(EmpresaRecord bean){
+        log.debug(bean);
+        return new EmpresaRecord(
+                bean.co_emp, bean.nb_emp, "INACTIVO"
+        );
     }
 
 }

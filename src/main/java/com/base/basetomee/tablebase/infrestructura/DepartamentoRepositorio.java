@@ -48,6 +48,11 @@ public class DepartamentoRepositorio implements DepartamentoInt{
     }
 
     @Override
+    public Result<DepartamentoRecord> read(String id) {
+        return null;
+    }
+
+    @Override
     public Result<DepartamentoRecord> update(DepartamentoRecord bean) {
         return null;
     }

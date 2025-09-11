@@ -17,7 +17,7 @@ public class EmpresaServ implements EmpresasServInt {
 
     @Override
     public Result<EmpresaRecord> nuevo(EmpresaRecord bean) {
-        log.debug("Se esta quedandto en EmpresaServ");
+        log.debug("Se esta quedando en Nuevo EmpresaServ");
         System.out.println();
        return empresaRepo.registrar(EmpresaRecord.GeneradorCodEmpresa(bean));
     }
@@ -28,13 +28,22 @@ public class EmpresaServ implements EmpresasServInt {
     }
 
     @Override
-    public Result<List<EmpresaServ>> getAll() {
+    public Result<EmpresaRecord> get(String id) {
+        return empresaRepo.read(id);
+    }
+
+    @Override
+    public Result<List<EmpresaRecord>> getAll() {
         return null;
     }
 
     @Override
-    public Result<String> modificar(EmpresaRecord bean) {
-        return null;
+    public Result<EmpresaRecord> modificar(EmpresaRecord bean) {
+        log.debug("Se esta quedando en Modificar EmpresaServ");
+        Result<EmpresaRecord> empresa = empresaRepo.read(bean.co_emp());
+        if(! empresa.IsSuccess()) return empresa;
+
+        return empresaRepo.update(bean);
     }
 
     @Override
