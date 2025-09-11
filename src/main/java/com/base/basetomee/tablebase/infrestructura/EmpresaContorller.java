@@ -2,6 +2,7 @@ package com.base.basetomee.tablebase.infrestructura;
 
 
 import com.base.basetomee.exception.ProblemDetails;
+import com.base.basetomee.tablebase.aplication.EmpresasServInt;
 import com.base.basetomee.tablebase.dominio.EmpresaRecord;
 import com.base.basetomee.usuario.dominio.user;
 import com.base.basetomee.usuario.dominio.usuario;
@@ -33,7 +34,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class EmpresaContorller {
 
     @Inject
-    EmpresaInt services;
+    EmpresasServInt services;
 
     @POST()
     @Path("/registrar")
@@ -54,9 +55,9 @@ public class EmpresaContorller {
 
         log.debug(bean.co_emp());
 
-        EmpresaRecord empresaRecord = services.registrar(bean).get();
+        EmpresaRecord empresaRecord = services.nuevo(bean).get();
 
-        return  Response.ok(empresaRecord).type(MediaType.APPLICATION_JSON).build();
+        return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
 

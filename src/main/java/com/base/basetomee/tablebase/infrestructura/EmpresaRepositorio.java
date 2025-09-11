@@ -19,7 +19,7 @@ public class EmpresaRepositorio implements EmpresaInt {
     @Override
     public Result<EmpresaRecord> registrar(EmpresaRecord bean) {
         String sql = """
-                        INSERT INTO PUBLIC.EMPRESAS (co_emp, bn_emp, st_estado)
+                        INSERT INTO PUBLIC.EMPRESA (co_emp, nb_emp, st_estado)
                         VALUES(?,?,?)
                      """;
 

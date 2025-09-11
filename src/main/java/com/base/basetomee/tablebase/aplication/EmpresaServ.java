@@ -17,10 +17,9 @@ public class EmpresaServ implements EmpresasServInt {
 
     @Override
     public Result<EmpresaRecord> nuevo(EmpresaRecord bean) {
-        log.debug("Se estaquedandto en EmpresaServ");
+        log.debug("Se esta quedandto en EmpresaServ");
         System.out.println();
-        return empresaRepo.registrar(bean);
-
+       return empresaRepo.registrar(bean);
     }
 
     @Override
