@@ -19,9 +19,9 @@ public record DepartamentoRecord(
         @JsonbProperty("co_dpt")
         String co_dpt,
 
-        @Schema(description = "Codigo Departamento:", required = true, example = "123456", hidden = false)
-        @Size(min = 6, max = 6, message = "Codigo Departamento: debe contener un rango de (6) digitos")
-        @NotNull(message = "Codigo Departamento: no puede estar vacio.")
+        @Schema(description = "Codigo Empresa:", required = true, example = "123456", hidden = false)
+        @Size(min = 6, max = 6, message = "Codigo Empresa: debe contener un rango de (6) digitos")
+        @NotNull(message = "Codigo Empresa: no puede estar vacio.")
         @JsonbProperty("co_emp")
         String co_emp,
 
