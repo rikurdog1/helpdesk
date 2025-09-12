@@ -48,12 +48,57 @@ public class TpSolicitudRepositorio implements TpSolicitudInt{
 
     @Override
     public Result<TpSolicitudRecord> read(String id) {
-        return null;
+        String sql = """
+                    SELECT I*. FROM PUBLIC.TPSOLICITUD I WHERE co_soli=?
+                """;
+        TpSolicitudRecord bean = null;
+
+        //Driver Resource
+        try(final Connection con = db.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql))
+        {
+            pstmt.setString(1, id);
+            ResultSet orset = pstmt.executeQuery();
+
+
+            while (orset.next()){
+                bean = parse(orset);
+            }
+
+            return new Result<TpSolicitudRecord>().OK(bean);
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new Result<TpSolicitudRecord>().Fail(e.getMessage());
+        }
+
     }
 
     @Override
     public Result<TpSolicitudRecord> update(TpSolicitudRecord bean) {
-        return null;
+        String sql = """
+                UPDATE PUBLIC.CARGO SET co_soli=?, co_dpt=?, co_emp=?, nb_carg=?, st_estado=? WHERE co_carg=?
+                """;
+
+        try(final Connection con = db.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql))
+        {
+            pstmt.setString(1, bean.co_soli());
+            pstmt.setString(2, bean.co_dpt());
+            pstmt.setString(3, bean.co_emp());
+            pstmt.setString(4, bean.nb_carg());
+            pstmt.setString(5, bean.st_estado());
+            pstmt.setString(6, bean.co_carg());
+
+
+            int affectedRow = pstmt.executeUpdate();
+            con.commit();
+            return new Result<CargoRecord>().OK(bean);
+
+        } catch (Exception e) {
+            log.debug(bean);
+            return new Result<CargoRecord>().Fail(e.getMessage());
+        }
     }
 
     @Override
@@ -65,4 +110,13 @@ public class TpSolicitudRepositorio implements TpSolicitudInt{
     public Result<String> eliminar(String id) {
         return null;
     }
+
+
+    protected TpSolicitudRecord parse(ResultSet orset) throws SQLException{
+
+        return new TpSolicitudRecord(orset.getString("co_soli"), orset.getString("alarma"), orset.getString("consulta"), orset.getString("incidencia"), orset.getString("incumplnormcce"), orset.getString("notificacion"), orset.getString("reclamo"));
+
+    }
+
+
 }

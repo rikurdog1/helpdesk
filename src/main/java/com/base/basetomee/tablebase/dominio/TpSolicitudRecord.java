@@ -74,7 +74,7 @@ public record TpSolicitudRecord(
         var a = RandomStringUtils.randomNumeric(10);
         log.debug(bean);
         return new TpSolicitudRecord(
-               bean.co_soli, bean.alarma, bean.consulta, bean.incidencia,
+               a, bean.alarma, bean.consulta, bean.incidencia,
                 bean.incumplnormcce, bean.notificacion, bean.reclamo
         );
     }

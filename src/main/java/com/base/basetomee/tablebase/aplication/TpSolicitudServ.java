@@ -20,11 +20,9 @@ public class TpSolicitudServ implements TpSolicitudServInt {
         return tpSolicitudInt.registrar(TpSolicitudRecord.GeneradorCoTpSoli(bean));
     }
 
-
-
     @Override
     public Result<TpSolicitudRecord> get(String id) {
-        return null;
+        return  tpSolicitudInt.read(id);
     }
 
     @Override
@@ -34,7 +32,11 @@ public class TpSolicitudServ implements TpSolicitudServInt {
 
     @Override
     public Result<TpSolicitudRecord> modificar(TpSolicitudRecord bean) {
-        return null;
+        log.debug("Se esta quedando en Modificar Tipo Solicitud");
+        Result<TpSolicitudRecord> solicitud = tpSolicitudInt.read(bean.co_soli());
+        if(! solicitud.IsSuccess()) return solicitud;
+
+        return tpSolicitudInt.update(bean);
     }
 
     @Override

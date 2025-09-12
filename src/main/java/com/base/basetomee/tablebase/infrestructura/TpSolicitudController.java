@@ -32,7 +32,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class TpSolicitudController {
 
     @Inject
-    TpSolicitudServInt service;
+    TpSolicitudServInt services;
 
     @POST()
     @Path("/registrar")
@@ -54,10 +54,34 @@ public class TpSolicitudController {
 
         log.debug(bean.co_soli());
 
-            TpSolicitudRecord tpSolicitudRecord = service.nuevo(bean).get();
+            TpSolicitudRecord tpSolicitudRecord = services.nuevo(bean).get();
 
             return Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
+
+    //Metodo modificar
+    @POST()
+    @Path("/modificar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+    @APIResponse(responseCode = "200", description = "Respuesta Exitosa de actualizacion de Solicitud.",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = TpSolicitudRecord.class)))
+
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetails.class)))
+
+    @Operation(summary = "Registrar Departamento.", description = "Permite registrar una solicitud.")
+
+    public Response UpdateEmpresa(@Valid TpSolicitudRecord bean){
+        log.debug(bean.co_soli());
+
+        TpSolicitudRecord cargoRecord = services.modificar(bean).get();
+        return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
+
+    }
 
 }
