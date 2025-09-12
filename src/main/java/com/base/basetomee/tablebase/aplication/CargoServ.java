@@ -24,7 +24,7 @@ public class CargoServ implements CargoServInt{
 
     @Override
     public Result<CargoRecord> get(String id) {
-        return null;
+        return cargoRepo.read(id);
     }
 
     @Override
@@ -34,7 +34,11 @@ public class CargoServ implements CargoServInt{
 
     @Override
     public Result<CargoRecord> modificar(CargoRecord bean) {
-        return null;
+        log.debug("Se esta quedanto en Modificar CargoServ");
+        //Validamos que el co_dpt exista
+        Result<CargoRecord> cargo = cargoRepo.read(bean.co_carg());
+        if(! cargo.IsSuccess()) return cargo;
+        return cargoRepo.update(bean);
     }
 
     @Override

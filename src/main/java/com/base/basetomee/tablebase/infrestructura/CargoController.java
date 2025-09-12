@@ -56,4 +56,28 @@ public class CargoController {
         return Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
+
+    @POST()
+    @Path("/modificar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+    @APIResponse(responseCode = "200", description = "Modificacion Exitosa, del Cargo.",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CargoRecord.class)))
+
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetails.class)))
+
+    @Operation(summary = "Actualizar Empresa.", description = "Permite Actualizar una un cargo existente.")
+
+    public Response UpdateEmpresa(@Valid CargoRecord bean){
+        log.debug(bean.co_emp());
+
+        CargoRecord cargoRecord = services.modificar(bean).get();
+        return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
+
+    }
+
 }

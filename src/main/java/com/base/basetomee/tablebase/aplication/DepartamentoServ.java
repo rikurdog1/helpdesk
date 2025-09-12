@@ -34,7 +34,7 @@ public class DepartamentoServ implements DepartamentoServInt{
     public Result<DepartamentoRecord> modificar(DepartamentoRecord bean) {
         log.debug("Se esta quedanto en Modificar DepartamentoServ");
         //Validamos que el co_dpt exista
-        Result<DepartamentoRecord> departamento = departamentoRepo.read(bean.co_emp());
+        Result<DepartamentoRecord> departamento = departamentoRepo.read(bean.co_dpt());
         if(! departamento.IsSuccess()) return departamento;
         return departamentoRepo.update(bean);
     }
