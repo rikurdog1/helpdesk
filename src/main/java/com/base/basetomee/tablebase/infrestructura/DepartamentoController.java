@@ -25,7 +25,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Log4j2
-@Path("/Departamento")
+@Path("/departamento")
 @ApplicationScoped
 @Tag(name = "Servicios Gestion de Tablas Base ")
 @OpenAPIDefinition(info = @Info(title = "Servicios Gestion de Tablas Base.", version = "1.0"))

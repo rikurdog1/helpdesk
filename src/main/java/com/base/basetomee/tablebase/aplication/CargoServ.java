@@ -37,6 +37,7 @@ public class CargoServ implements CargoServInt{
         log.debug("Se esta quedanto en Modificar CargoServ");
         //Validamos que el co_dpt exista
         Result<CargoRecord> cargo = cargoRepo.read(bean.co_carg());
+        //En caso de que exista
         if(! cargo.IsSuccess()) return cargo;
         return cargoRepo.update(bean);
     }

@@ -1,8 +1,8 @@
 package com.base.basetomee.tablebase.infrestructura;
-
 import com.base.basetomee.exception.ProblemDetails;
-import com.base.basetomee.tablebase.aplication.CargoServInt;
-import com.base.basetomee.tablebase.dominio.CargoRecord;
+import com.base.basetomee.tablebase.aplication.TpSolicitudServInt;
+import com.base.basetomee.tablebase.dominio.TpSolicitudRecord;
+import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -24,60 +24,40 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Log4j2
-@Path("/cargo")
+@Path("/tpsolicitud")
 @ApplicationScoped
 @Tag(name = "Servicios Gestion de Tablas Base ")
 @OpenAPIDefinition(info = @Info(title = "Servicios Gestion de Tablas Base.", version = "1.0"))
-public class CargoController {
+
+public class TpSolicitudController {
 
     @Inject
-    CargoServInt services;
+    TpSolicitudServInt service;
 
     @POST()
     @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
 
-    @APIResponse(responseCode = "200", description = "Respuesta Exitosa del registro de Cargo.",
+    @APIResponse(responseCode = "200", description = "Respuesta Exitosa del registro de Solicitud.",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CargoRecord.class)))
+                    schema = @Schema(implementation = TpSolicitudRecord.class)))
 
     @APIResponse(responseCode = "409", description = "Error de validación datos.",
             content = @Content(mediaType = "application/problem+json",
                     schema = @Schema(implementation = ProblemDetails.class)))
 
-    @Operation(summary = "Registrar Cargo.", description = "Permite registrar un nuevo Cargo.")
+    @Operation(summary = "Registrar Departamento.", description = "Permite registrar una solicitud.")
 
-    public Response getCRG(@Valid CargoRecord bean){
-        log.debug(bean.co_carg());
 
-        CargoRecord cargoRecord = services.nuevo(bean).get();
+    public Response getTpSoli(@Valid TpSolicitudRecord bean){
 
-        return Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
+        log.debug(bean.co_soli());
+
+            TpSolicitudRecord tpSolicitudRecord = service.nuevo(bean).get();
+
+            return Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
-
-    @POST()
-    @Path("/modificar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
-
-    @APIResponse(responseCode = "200", description = "Modificacion Exitosa, del Cargo.",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CargoRecord.class)))
-
-    @APIResponse(responseCode = "409", description = "Error de validación datos.",
-            content = @Content(mediaType = "application/problem+json",
-                    schema = @Schema(implementation = ProblemDetails.class)))
-
-    @Operation(summary = "Actualizar Empresa.", description = "Permite Actualizar una un cargo existente.")
-
-    public Response UpdateEmpresa(@Valid CargoRecord bean){
-        log.debug(bean.co_emp());
-
-        CargoRecord cargoRecord = services.modificar(bean).get();
-        return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
-
-    }
 
 }
