@@ -3,6 +3,7 @@ import com.base.basetomee.exception.ProblemDetails;
 import com.base.basetomee.tablebase.aplication.DepartamentoServInt;
 import com.base.basetomee.tablebase.dominio.DepartamentoRecord;
 import com.base.basetomee.tablebase.dominio.EmpresaRecord;
+import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -57,6 +58,29 @@ public class DepartamentoController {
             return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
         }
 
+        //Metodo para modificacion
+        @POST()
+        @Path("/modificar")
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+        @APIResponse(responseCode = "200", description = "Respuesta Exitosa, actualizacion de Departamento.",
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = DepartamentoRecord.class)))
+
+        @APIResponse(responseCode = "409", description = "Error de validación datos.",
+                content = @Content(mediaType = "application/problem+json",
+                        schema = @Schema(implementation = ProblemDetails.class)))
+
+        @Operation(summary = "Actualizar Departamento.", description = "Actualizar un nuevo Departamento.")
+
+        public Response UpdateDepartamento(@Valid DepartamentoRecord bean){
+            log.debug(bean.co_emp());
+
+            DepartamentoRecord departamentoRecord = services.modificar(bean).get();
+            return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
+
+        }
 
 
 }

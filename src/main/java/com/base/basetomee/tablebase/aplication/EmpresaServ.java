@@ -23,11 +23,6 @@ public class EmpresaServ implements EmpresasServInt {
     }
 
     @Override
-    public Result<EmpresaRecord> get(int id) {
-        return null;
-    }
-
-    @Override
     public Result<EmpresaRecord> get(String id) {
         return empresaRepo.read(id);
     }

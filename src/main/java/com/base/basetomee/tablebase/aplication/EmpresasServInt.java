@@ -9,8 +9,6 @@ import java.util.concurrent.Future;
 public interface EmpresasServInt {
 
     public Result<EmpresaRecord> nuevo(EmpresaRecord bean);
-    public Result<EmpresaRecord> get(int id);
-
     Result<EmpresaRecord> get(String id);
 
     public Result<List<EmpresaRecord>> getAll();

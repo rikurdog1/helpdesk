@@ -32,7 +32,7 @@ public record DepartamentoRecord(
         @JsonbProperty("nb_dpt")
         String nb_dpt,
 
-        @Schema(description = "Estado", required = true, example = "Gestion de Servicios", hidden = false)
+        @Schema(description = "Estado", required = true, example = "ACTIVO", hidden = false)
         @Size(min = 3, max = 20, message = "Estado: tamaño incorrecto, el rango debe ser comprendido entre 3 y 10 caracteres")
         @NotNull(message = "El Nombre del Departamento no puede quedar vacio.")
         @JsonbProperty("st_estado")
@@ -48,4 +48,12 @@ public record DepartamentoRecord(
                 a, bean.co_emp , bean.nb_dpt, "ACTIVO"
     );
     }
+
+    public static DepartamentoRecord DataUpdate(DepartamentoRecord bean){
+        log.debug(bean);
+        return new DepartamentoRecord(
+                "HOLA1", "HOLA2", "HOLA3", "HOLA4"
+        );
+    }
+
 }

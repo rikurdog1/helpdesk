@@ -21,18 +21,22 @@ public class DepartamentoServ implements DepartamentoServInt{
     }
 
     @Override
-    public Result<DepartamentoRecord> get(int id) {
+    public Result<DepartamentoRecord> get(String id) {
+        return departamentoRepo.read(id);
+    }
+
+    @Override
+    public Result<List<DepartamentoRecord>> getAll() {
         return null;
     }
 
     @Override
-    public Result<List<DepartamentoServ>> getAll() {
-        return null;
-    }
-
-    @Override
-    public Result<String> modificar(DepartamentoRecord bean) {
-        return null;
+    public Result<DepartamentoRecord> modificar(DepartamentoRecord bean) {
+        log.debug("Se esta quedanto en Modificar DepartamentoServ");
+        //Validamos que el co_dpt exista
+        Result<DepartamentoRecord> departamento = departamentoRepo.read(bean.co_emp());
+        if(! departamento.IsSuccess()) return departamento;
+        return departamentoRepo.update(bean);
     }
 
     @Override

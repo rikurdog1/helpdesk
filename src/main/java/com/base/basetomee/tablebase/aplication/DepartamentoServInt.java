@@ -9,9 +9,9 @@ import java.util.List;
 public interface DepartamentoServInt {
 
     public Result<DepartamentoRecord> nuevo(DepartamentoRecord bean);
-    public Result<DepartamentoRecord> get(int id);
-    public Result<List<DepartamentoServ>> getAll();
-    public Result<String> modificar(DepartamentoRecord bean);
+    public Result<DepartamentoRecord> get(String id);
+    public Result<List<DepartamentoRecord>> getAll();
+    public Result<DepartamentoRecord> modificar(DepartamentoRecord bean);
     public Result<String> eliminar(String id);
 
 }
