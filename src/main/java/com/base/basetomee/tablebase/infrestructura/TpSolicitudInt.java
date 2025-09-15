@@ -10,6 +10,6 @@ public interface TpSolicitudInt {
     public Result<TpSolicitudRecord> read(String id);
     public Result<TpSolicitudRecord> update(TpSolicitudRecord bean);
     public Result<List<TpSolicitudRecord>> listar();
-    public Result<String> eliminar(String id);
+    public Result<TpSolicitudRecord> eliminar(String id);
 
 }

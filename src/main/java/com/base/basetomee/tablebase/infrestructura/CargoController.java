@@ -77,7 +77,6 @@ public class CargoController {
 
         CargoRecord cargoRecord = services.modificar(bean).get();
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
-
     }
 
 }

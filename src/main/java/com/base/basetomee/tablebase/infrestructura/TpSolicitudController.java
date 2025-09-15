@@ -6,10 +6,7 @@ import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.log4j.Log4j2;
@@ -47,7 +44,7 @@ public class TpSolicitudController {
             content = @Content(mediaType = "application/problem+json",
                     schema = @Schema(implementation = ProblemDetails.class)))
 
-    @Operation(summary = "Registrar Departamento.", description = "Permite registrar una solicitud.")
+    @Operation(summary = "Registrar Solicitud.", description = "Permite registrar una solicitud.")
 
 
     public Response getTpSoli(@Valid TpSolicitudRecord bean){
@@ -74,14 +71,47 @@ public class TpSolicitudController {
             content = @Content(mediaType = "application/problem+json",
                     schema = @Schema(implementation = ProblemDetails.class)))
 
-    @Operation(summary = "Registrar Departamento.", description = "Permite registrar una solicitud.")
+    @Operation(summary = "Registrar Solicitud.", description = "Permite registrar una solicitud.")
 
     public Response UpdateEmpresa(@Valid TpSolicitudRecord bean){
         log.debug(bean.co_soli());
 
-        TpSolicitudRecord cargoRecord = services.modificar(bean).get();
+        TpSolicitudRecord tpSolicitudRecord = services.modificar(bean).get();
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
 
+    }
+
+    //Metodo Delete
+    @DELETE()
+    @Path("/eliminar/{id}")
+    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+    @APIResponse(responseCode = "200", description = "Respuesta Exitosa para eliminar solicitud",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Result.class)))
+
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetails.class)))
+
+    @Operation(summary = "Eliminar Solicitud.", description = "Permite eliminar una solicitud por ID.")
+
+    public Response deleteRow(@PathParam("id") String id){
+        log.debug("Intentando eliminar ID: " + id);
+
+        // Llama al servicio para eliminar el registro
+        Result<TpSolicitudRecord> resultado = services.eliminar(id);
+
+        if (resultado.IsSuccess()) {
+            return Response.ok(resultado.get()).type(MediaType.APPLICATION_JSON).build();
+
+        } else {
+            // En caso de error, devolver un estado 404 (Not Found) o 409 (Conflict)
+            return Response.status(Response.Status.CONFLICT)
+                    .entity(new ProblemDetails("Error", "No se pudo eliminar el registro: " + resultado.getMsj()))
+                    .type("application/problem+json")
+                    .build();
+        }
     }
 
 }

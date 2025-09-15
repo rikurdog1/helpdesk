@@ -4,6 +4,7 @@ import com.base.basetomee.tablebase.dominio.TpSolicitudRecord;
 import com.base.basetomee.tablebase.infrestructura.TpSolicitudInt;
 import jakarta.inject.Inject;
 import com.base.basetomee.util.Result;
+import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,7 +41,9 @@ public class TpSolicitudServ implements TpSolicitudServInt {
     }
 
     @Override
-    public Result<String> eliminar(String id) {
-        return null;
+    public Result<TpSolicitudRecord> eliminar(String id) {
+        log.debug("Servicio llamado: Eliminar");
+        Result<TpSolicitudRecord> delete = tpSolicitudInt.eliminar(id);
+        return new Result().OK("true");
     }
 }

@@ -38,4 +38,7 @@ public class ProblemDetails  {
         this.titulo = tilulo;
         this.mensaje = mensaje;
     }
+
+    public ProblemDetails(String error, String s) {
+    }
 }

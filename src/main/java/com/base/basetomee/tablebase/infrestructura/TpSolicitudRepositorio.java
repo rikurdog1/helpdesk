@@ -72,7 +72,7 @@ public class TpSolicitudRepositorio implements TpSolicitudInt{
     @Override
     public Result<TpSolicitudRecord> update(TpSolicitudRecord bean) {
         String sql = """
-                UPDATE PUBLIC.TPSOLICITUD SET nb_soli=?, WHERE co_soli=?
+                UPDATE PUBLIC.TPSOLICITUD SET nb_soli=? WHERE co_soli=?
                 """;
         try(final Connection con = db.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql)){
@@ -96,8 +96,33 @@ public class TpSolicitudRepositorio implements TpSolicitudInt{
     }
 
     @Override
-    public Result<String> eliminar(String id) {
-        return null;
+    public Result<TpSolicitudRecord> eliminar(String id) {
+        String sql = """
+                DELETE FROM PUBLIC.TPSOLICITUD WHERE co_soli=?;
+            """;
+
+        try(final Connection con = db.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql))
+        {
+            // Limpiar el ID antes de usarlo
+            String sanitizedId = id.trim();
+            pstmt.setString(1, id);
+
+            int rowsAffected = pstmt.executeUpdate();
+            con.commit();
+
+            if (rowsAffected > 0) {
+                // Si el numero de filas afectadas es mayor a 0, la eliminación fue exitosa
+                return new Result<String>().OK("Registro con ID " + id + " eliminado correctamente.");
+            } else {
+                // Si rowsAffected es 0, no se encontró el registro
+                return new Result<String>().Fail("No se encontró el registro con el ID: " + id + ".");
+            }
+
+        } catch (Exception e) {
+            log.error("Error al eliminar el registro: " + e.getMessage());
+            return new Result<String>().Fail("Error al eliminar el registro: " + e.getMessage());
+        }
     }
 
 

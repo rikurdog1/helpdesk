@@ -13,6 +13,6 @@ public interface TpSolicitudServInt {
 
     public Result<List<TpSolicitudRecord>> getAll();
     public Result<TpSolicitudRecord> modificar(TpSolicitudRecord bean);
-    public Result<String> eliminar(String id);
+    public Result<TpSolicitudRecord> eliminar(String id);
 
 }
