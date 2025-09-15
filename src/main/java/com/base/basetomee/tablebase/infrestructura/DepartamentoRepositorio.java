@@ -19,8 +19,8 @@ public class DepartamentoRepositorio implements DepartamentoInt{
     @Override
     public Result<DepartamentoRecord> registrar(DepartamentoRecord bean) {
         String sql = """
-                        INSERT INTO PUBLIC.departamento (co_dpt, co_emp, nb_dpt, st_estado)
-                        VALUES(?,?,?,?)
+                        INSERT INTO PUBLIC.departamento (co_dpt, co_emp, nb_dpt, st_estado,dateemision)
+                        VALUES(?,?,?,?,?)
                      """;
 
         try(final Connection con = bd.getConnection();
@@ -30,6 +30,7 @@ public class DepartamentoRepositorio implements DepartamentoInt{
             pstmt.setString(2, bean.co_emp());
             pstmt.setString(3, bean.nb_dpt());
             pstmt.setString(4, bean.st_estado());
+            pstmt.setString(5, bean.dateemision());
 
 
 
@@ -73,13 +74,12 @@ public class DepartamentoRepositorio implements DepartamentoInt{
     @Override
     public Result<DepartamentoRecord> update(DepartamentoRecord bean) {
         String sql = """
-                    UPDATE PUBLIC.DEPARTAMENTO SET co_dpt=?, co_emp=?, nb_dpt=?, st_estado=? WHERE co_dpt=?
+                    UPDATE PUBLIC.DEPARTAMENTO SET co_emp=?, nb_dpt=?, st_estado=? WHERE co_dpt=?
                 """;
 
         try(final Connection con = bd.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql)
         ){
-            pstmt.setString(1, bean.co_dpt());
             pstmt.setString(2, bean.co_emp());
             pstmt.setString(3, bean.nb_dpt());
             pstmt.setString(4, bean.st_estado());
@@ -110,7 +110,8 @@ public class DepartamentoRepositorio implements DepartamentoInt{
 
     protected DepartamentoRecord parse(ResultSet orset) throws SQLException{
 
-        return new DepartamentoRecord(orset.getString("co_dpt"), orset.getString("co_emp"), orset.getString("nb_dpt") ,orset.getString("st_estado"));
+        return new DepartamentoRecord(orset.getString("co_dpt"), orset.getString("co_emp"),
+                orset.getString("nb_dpt") ,orset.getString("st_estado"), orset.getString("dateemision"));
 
     }
 

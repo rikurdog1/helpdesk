@@ -22,8 +22,8 @@ public class EmpresaRepositorio implements EmpresaInt {
     @Override
     public Result<EmpresaRecord> registrar(EmpresaRecord bean) {
         String sql = """
-                        INSERT INTO PUBLIC.EMPRESA (co_emp, nb_emp, st_estado)
-                        VALUES(?,?,?)
+                        INSERT INTO PUBLIC.EMPRESA (co_emp, nb_emp, st_estado, dateemision)
+                        VALUES(?,?,?,?)
                      """;
 
         try(final Connection con = bd.getConnection();
@@ -32,6 +32,7 @@ public class EmpresaRepositorio implements EmpresaInt {
             pstmt.setString(1, bean.co_emp());
             pstmt.setString(2, bean.nb_emp());
             pstmt.setString(3, bean.st_estado());
+            pstmt.setString(4, bean.dateemision());
 
             int affectedRows = pstmt.executeUpdate();
             con.commit();
@@ -72,12 +73,11 @@ public class EmpresaRepositorio implements EmpresaInt {
     @Override
     public Result<EmpresaRecord> update(EmpresaRecord bean) {
         String sql = """
-                    UPDATE PUBLIC.EMPRESA SET co_emp=?, nb_emp=?, st_estado=? WHERE co_emp=?
+                    UPDATE PUBLIC.EMPRESA SET  nb_emp=?, st_estado=? WHERE co_emp=?
                 """;
         try(final Connection con = bd.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql))
         {
-            pstmt.setString(1, bean.co_emp());
             pstmt.setString(2, bean.nb_emp());
             pstmt.setString(3, bean.st_estado());
             pstmt.setString(4, bean.co_emp());
@@ -106,7 +106,8 @@ public class EmpresaRepositorio implements EmpresaInt {
 
     protected EmpresaRecord parse(ResultSet orset) throws SQLException{
 
-        return new EmpresaRecord(orset.getString("co_emp"), orset.getString("nb_emp"), orset.getString("st_estado"));
+        return new EmpresaRecord(orset.getString("co_emp"), orset.getString("nb_emp"),
+                orset.getString("st_estado"), orset.getString("dateemision"));
 
     }
 

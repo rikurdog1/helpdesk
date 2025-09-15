@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.time.LocalDate;
+
 
 @Schema(name = "departamentoRecord", description = "Datos del Departamento.")
 @Log4j2
@@ -36,24 +38,25 @@ public record DepartamentoRecord(
         @Size(min = 3, max = 20, message = "Estado: tamaño incorrecto, el rango debe ser comprendido entre 3 y 10 caracteres")
         @NotNull(message = "El Nombre del Departamento no puede quedar vacio.")
         @JsonbProperty("st_estado")
-        String st_estado
+        String st_estado,
+
+        @Schema(description = "Fecha de Emision: ", required = true, example = "2025-09-15", hidden = false)
+        @NotNull(message = "La fecha de Emision no puede quedar vacia")
+        @JsonbProperty("dateemision")
+        String dateemision
 
         ) {
 
     //Metodo para generar un codigo randon para departamento
     static public DepartamentoRecord GenCodDPT(DepartamentoRecord bean){
         var a = RandomStringUtils.randomNumeric(6);
+        LocalDate dateActual = LocalDate.now();
+        var dateEmi = dateActual.toString();
         log.debug(a);
         return new DepartamentoRecord(
-                a, bean.co_emp , bean.nb_dpt, "ACTIVO"
+                a, bean.co_emp , bean.nb_dpt, "ACTIVO", dateEmi
     );
     }
 
-    public static DepartamentoRecord DataUpdate(DepartamentoRecord bean){
-        log.debug(bean);
-        return new DepartamentoRecord(
-                "HOLA1", "HOLA2", "HOLA3", "HOLA4"
-        );
-    }
 
 }

@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.time.LocalDate;
+
 @Schema(name = "cargoRecord", description = "Datos del Cargo.")
 @Log4j2
 
@@ -39,16 +41,23 @@ public record CargoRecord(
         @Schema(description = "Estado", required = true, example = "ACTIVO", hidden = false)
         @Size(min = 3, max = 20, message = "Estado: tamaño incorrecto, el rango debe ser comprendido entre 3 y 10 caracteres")
         @NotNull(message = "El Nombre del Departamento no puede quedar vacio.")
-        @JsonbProperty ("st_estado") String st_estado
+        @JsonbProperty ("st_estado") String st_estado,
+
+        @Schema(description = "Fecha de Emision: ", required = true, example = "2025-09-15", hidden = false)
+        @NotNull(message = "La fecha de Emision no puede quedar vacia")
+        @JsonbProperty("dateemision")
+        String dateemision
 
     ) {
 
     //Metodo para generar un codigo randon para departamento
     static public CargoRecord GenCodCRG(CargoRecord bean) {
         var a = RandomStringUtils.randomNumeric(6);
+        LocalDate dateActual = LocalDate.now();
+        var dateEmi = dateActual.toString();
         log.debug(a);
         return new CargoRecord(
-                a, bean.co_dpt, bean.co_emp, bean.nb_carg, "ACTIVO"
+                a, bean.co_dpt, bean.co_emp, bean.nb_carg, "ACTIVO", dateEmi
         );
     }
 

@@ -23,8 +23,8 @@ public class CargoRepositorio implements CargoInt{
     @Override
     public Result<CargoRecord> registrar(CargoRecord bean) {
         String sql = """
-                   INSERT INTO PUBLIC.CARGO (co_carg, co_dpt, co_emp, nb_carg, st_estado)
-                   VALUES(?,?,?,?,?)
+                   INSERT INTO PUBLIC.CARGO (co_carg, co_dpt, co_emp, nb_carg, st_estado, dateemision)
+                   VALUES(?,?,?,?,?,?)
                 """;
 
         try(final Connection con = db.getConnection();
@@ -35,6 +35,7 @@ public class CargoRepositorio implements CargoInt{
             pstmt.setString(3, bean.co_emp());
             pstmt.setString(4, bean.nb_carg());
             pstmt.setString(5, bean.st_estado());
+            pstmt.setString(6, bean.dateemision());
 
             int affectedRows  = pstmt.executeUpdate();
             con.commit();
@@ -80,13 +81,12 @@ public class CargoRepositorio implements CargoInt{
     @Override
     public Result<CargoRecord> update(CargoRecord bean) {
         String sql = """
-                UPDATE PUBLIC.CARGO SET co_carg=?, co_dpt=?, co_emp=?, nb_carg=?, st_estado=? WHERE co_carg=?
+                UPDATE PUBLIC.CARGO SET co_dpt=?, co_emp=?, nb_carg=?, st_estado=? WHERE co_carg=?
                 """;
 
         try(final Connection con = db.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql))
         {
-            pstmt.setString(1, bean.co_carg());
             pstmt.setString(2, bean.co_dpt());
             pstmt.setString(3, bean.co_emp());
             pstmt.setString(4, bean.nb_carg());
@@ -119,7 +119,9 @@ public class CargoRepositorio implements CargoInt{
 
     protected CargoRecord parse(ResultSet orset) throws SQLException{
 
-        return new CargoRecord(orset.getString("co_carg"), orset.getString("co_dpt"), orset.getString("co_emp"), orset.getString("nb_carg") ,orset.getString("st_estado"));
+        return new CargoRecord(orset.getString("co_carg"), orset.getString("co_dpt"),
+        orset.getString("co_emp"), orset.getString("nb_carg"),
+                orset.getString("st_estado"), orset.getString("dateemision"));
 
     }
 
