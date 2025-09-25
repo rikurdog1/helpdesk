@@ -27,6 +27,6 @@ public class jsonParsingExcepMapper implements ExceptionMapper<JsonParsingExcept
     }
    
     protected ProblemDetails preparMensaje(JsonParsingException e){
-        return new ProblemDetails(409, "Error en operacion...", "Error en formato de Json " + e.getMessage());             
+        return new ProblemDetails(409, "Error en operacion...", "Error en formato de Json " + e.getMessage(), 5);
     } 
 }

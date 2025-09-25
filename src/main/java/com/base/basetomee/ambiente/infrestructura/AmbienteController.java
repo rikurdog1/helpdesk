@@ -106,7 +106,7 @@ public class AmbienteController {
         } else {
             // En caso de error, devolver un estado 404 (Not Found) o 409 (Conflict)
             return Response.status(Response.Status.CONFLICT)
-                    .entity(new ProblemDetails("Error", "No se pudo eliminar el registro: " + resultado.getMsj()))
+                    .entity("")
                     .type("application/problem+json")
                     .build();
         }
