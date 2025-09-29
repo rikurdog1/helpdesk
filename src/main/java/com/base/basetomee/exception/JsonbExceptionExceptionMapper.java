@@ -29,6 +29,6 @@ public class JsonbExceptionExceptionMapper implements ExceptionMapper<JsonbExcep
     }
     
     protected ProblemDetails preparMensaje(JsonbException e){
-        return new ProblemDetails(409, "Error en el Json.", "Error en formato de Json " + e.getMessage());             
+        return new ProblemDetails(409, "Error en el Json.", "Error en formato de Json " + e.getMessage(),5);
     }  
 }

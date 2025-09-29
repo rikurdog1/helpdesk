@@ -4,6 +4,7 @@ package com.base.basetomee.organizacion.empresa.infrestructura;
 import com.base.basetomee.exception.ProblemDetails;
 import com.base.basetomee.organizacion.empresa.aplication.EmpresasServInt;
 import com.base.basetomee.organizacion.empresa.dominio.EmpresaRecord;
+import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -13,11 +14,14 @@ import jakarta.ws.rs.core.Response;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
+import java.util.List;
 
 @Log4j2
 @Path("/empresas")
@@ -53,6 +57,51 @@ public class EmpresaContorller {
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
+    @GET()
+    @Path("/list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+
+    @APIResponse(responseCode = "200", description = "Respuesta Exitosa para listar Empresa.",
+            // CORREGIDO: Usar 'type = SchemaType.ARRAY' y 'implementation'
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(type = SchemaType.ARRAY, implementation = EmpresaRecord.class)))
+
+    @APIResponse(responseCode = "409", description = "Error de validación datos.",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetails.class)))
+
+    @Operation(summary = "Listar Empresa.", description = "Permite Listar todas las empresas registradas.")
+
+    public Response listEmpresa() {
+
+        // Llamar al servicio
+        Result<List<EmpresaRecord>> empresaResult = services.getAll();
+
+        // 2. Check the service call status
+        if (empresaResult.isSuccess()) {
+            // Successful response (HTTP 200)
+            return Response.ok(empresaResult.getData())
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } else {
+            // Error handling (HTTP 409 or other error status)
+
+            // **IMPORTANT:** You need to get error details from the Result
+            // object to populate your ProblemDetails object.
+            ProblemDetails problem = createProblemDetailsFrom(empresaResult);
+
+            return Response.status(Response.Status.CONFLICT) // 409
+                    .entity(problem)
+                    .type("application/problem+json")
+                    .build();
+        }
+    }
+
+    private ProblemDetails createProblemDetailsFrom(Result<List<EmpresaRecord>> empresaResult) {
+        return null;
+    }
+
     @PATCH()
     @Path("/modificar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -75,6 +124,7 @@ public class EmpresaContorller {
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
 
     }
+
 
 
 

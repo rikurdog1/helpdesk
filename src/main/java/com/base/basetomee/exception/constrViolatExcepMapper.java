@@ -23,16 +23,28 @@ public class constrViolatExcepMapper implements ExceptionMapper<ConstraintViolat
 
     @Override
     public Response toResponse(ConstraintViolationException e) {
-        log.error("Desde el error de ConstraintViolationException");
+        log.error("Desde el error de ConstraintViolationException: {}", e.getMessage());
         ProblemDetails ae = preparMensaje(e);
-        log.error("Desde el error de ConstraintViolationException");
+        // El log anterior se repetía, lo he quitado y ajustado el primero para incluir el mensaje del error.
         return Response.status(ae.getStatus()).entity(ae).type(MediaType.APPLICATION_JSON).build();
     }
-    
-     protected ProblemDetails preparMensaje(ConstraintViolationException e){ 
-         log.error("Desde el error de ConstraintViolationException 1");
-         return new ProblemDetails(409, 
-                   "Algunos campos no pasan la validación correspondiente.", 
-                   e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.toList()));              
-    }    
+
+    protected ProblemDetails preparMensaje(ConstraintViolationException e) {
+        log.error("Desde el error de ConstraintViolationException 1");
+
+        // Recopila todos los mensajes de violación de restricciones en un solo String
+        String validationDetails = e.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.joining(", ")); // Puedes usar "\n" si prefieres saltos de línea
+
+        int status = Response.Status.BAD_REQUEST.getStatusCode(); // 400 Bad Request es estándar para validación
+
+        // Construye ProblemDetails usando el patrón Builder de Lombok
+        return ProblemDetails.builder()
+                .status(status) // 400 Bad Request
+                .type(status)   // Usar el mismo código para 'type'
+                .title("Error de Validación de Datos")
+                .detail("Algunos campos no pasan la validación correspondiente: " + validationDetails)
+                .build();
+    }
 }

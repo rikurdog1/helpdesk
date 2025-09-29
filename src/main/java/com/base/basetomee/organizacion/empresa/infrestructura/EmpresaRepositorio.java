@@ -6,6 +6,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.log4j.Log4j2;
 
 import javax.sql.DataSource;
+import java.security.cert.Extension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,7 +95,27 @@ public class EmpresaRepositorio implements EmpresaInt {
 
     @Override
     public Result<List<EmpresaRecord>> listar() {
-        return null;
+        String sql = """
+                    SELECT *FROM PUBLIC.EMPRESA
+                """;
+        EmpresaRecord bean = null;
+
+        try(final Connection con = bd.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql))
+        {
+            ResultSet orset = pstmt.executeQuery();
+
+            while(orset.next()){
+                bean = parse(orset);
+            }
+
+            return new Result<EmpresaRecord>().OK(bean);
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new Result<>().Fail(e.getMessage());
+        }
+
     }
 
     @Override

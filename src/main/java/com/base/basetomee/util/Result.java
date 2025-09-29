@@ -30,4 +30,12 @@ public class Result<E> {
     public boolean IsSuccess(){return this.succe;} 
     public E get(){return this._resp;}
     public String getMsj(){return this._Msj;}
+
+    public boolean isSuccess() {
+        return false;
+    }
+
+    public E getData() {
+        return null;
+    }
 }

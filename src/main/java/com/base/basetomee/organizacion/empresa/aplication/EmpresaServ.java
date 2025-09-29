@@ -29,7 +29,7 @@ public class EmpresaServ implements EmpresasServInt {
 
     @Override
     public Result<List<EmpresaRecord>> getAll() {
-        return null;
+        return empresaRepo.listar();
     }
 
     @Override

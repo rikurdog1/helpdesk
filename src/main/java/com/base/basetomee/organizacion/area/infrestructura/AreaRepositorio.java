@@ -45,7 +45,7 @@ public class AreaRepositorio implements AreaInt {
     @Override
     public Result<AreaRecord> read(int id) {
         String sql = """
-                    SELECT I.* FROM PUBLIC.DEPARTAMENTO I WHERE co_area=?
+                    SELECT I.* FROM PUBLIC.AREA I WHERE co_area=?
                 """;
             AreaRecord bean = null;
 
@@ -71,7 +71,7 @@ public class AreaRepositorio implements AreaInt {
     @Override
     public Result<AreaRecord> update(AreaRecord bean) {
         String sql = """
-                    UPDATE PUBLIC.DEPARTAMENTO SET nb_area=?, co_empresa=?, st_area=? WHERE co_area=?
+                    UPDATE PUBLIC.AREA SET nb_area=?, co_empresa=?, st_area=? WHERE co_area=?
                 """;
 
         try(final Connection con = bd.getConnection();
