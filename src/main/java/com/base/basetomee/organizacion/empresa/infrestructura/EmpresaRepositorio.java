@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -93,29 +94,38 @@ public class EmpresaRepositorio implements EmpresaInt {
 
     }
 
+
     @Override
     public Result<List<EmpresaRecord>> listar() {
         String sql = """
-                    SELECT *FROM PUBLIC.EMPRESA
-                """;
-        EmpresaRecord bean = null;
+                SELECT * FROM PUBLIC.EMPRESA
+            """;
 
-        try(final Connection con = bd.getConnection();
-            PreparedStatement pstmt = con.prepareStatement(sql))
-        {
+        // Inicializar la lista para guardar TODAS las empresas
+        List<EmpresaRecord> empresas = new ArrayList<>();
+
+        try (final Connection con = bd.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+
             ResultSet orset = pstmt.executeQuery();
 
-            while(orset.next()){
-                bean = parse(orset);
+
+            while (orset.next()) {
+                // Agregar cada registro a la lista
+                empresas.add(parse(orset));
+                log.debug("111111");
             }
+            log.debug(empresas.size());
 
-            return new Result<EmpresaRecord>().OK(bean);
+            // Devolver la lista COMPLETA como resultado exitoso (HTTP 200)
+            // La lista puede ser vacía si no hay registros, ¡lo cual es OK!
+            return new Result<List<EmpresaRecord>>().OK(empresas);
 
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return new Result<>().Fail(e.getMessage());
+        } catch (Exception e) {
+            // Capturar errores de conexión o SQL (HTTP 409 o similar)
+            log.error("Error al listar empresas: {}", e.getMessage());
+            return new Result<List<EmpresaRecord>>().Fail("Error de base de datos: " + e.getMessage());
         }
-
     }
 
     @Override

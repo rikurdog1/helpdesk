@@ -4,6 +4,7 @@ package com.base.basetomee.organizacion.empresa.infrestructura;
 import com.base.basetomee.exception.ProblemDetails;
 import com.base.basetomee.organizacion.empresa.aplication.EmpresasServInt;
 import com.base.basetomee.organizacion.empresa.dominio.EmpresaRecord;
+import com.base.basetomee.usuario.dominio.usuario;
 import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -22,6 +23,8 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Log4j2
 @Path("/empresas")
@@ -57,8 +60,9 @@ public class EmpresaContorller {
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }
 
+
     @GET()
-    @Path("/list")
+    @Path("/listar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
 
@@ -73,24 +77,23 @@ public class EmpresaContorller {
 
     @Operation(summary = "Listar Empresa.", description = "Permite Listar todas las empresas registradas.")
 
-    public Response listEmpresa() {
 
+    public Response listEmpresa() {
         // Llamar al servicio
         Result<List<EmpresaRecord>> empresaResult = services.getAll();
+        log.debug(empresaResult.isSuccess());
 
-        // 2. Check the service call status
+        // Comprobar el estado de la solicitud de servicio
         if (empresaResult.isSuccess()) {
-            // Successful response (HTTP 200)
-            return Response.ok(empresaResult.getData())
+            // Respuesta exitosa (HTTP 200)
+            return Response.ok(empresaResult.get())
                     .type(MediaType.APPLICATION_JSON)
                     .build();
+
         } else {
-            // Error handling (HTTP 409 or other error status)
-
-            // **IMPORTANT:** You need to get error details from the Result
-            // object to populate your ProblemDetails object.
+            // Error (HTTP 409)
             ProblemDetails problem = createProblemDetailsFrom(empresaResult);
-
+            log.debug(problem);
             return Response.status(Response.Status.CONFLICT) // 409
                     .entity(problem)
                     .type("application/problem+json")
