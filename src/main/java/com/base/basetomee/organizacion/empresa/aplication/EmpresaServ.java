@@ -29,9 +29,8 @@ public class EmpresaServ implements EmpresasServInt {
 
     @Override
     public Result<List<EmpresaRecord>> getAll() {
-        var a = empresaRepo.listar();
-        log.debug(a.IsSuccess());
-        return a;
+        log.debug("Funcion getAll Invocada");
+        return empresaRepo.listar();
     }
 
     @Override

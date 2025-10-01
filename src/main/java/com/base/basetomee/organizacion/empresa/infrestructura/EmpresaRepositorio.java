@@ -113,7 +113,6 @@ public class EmpresaRepositorio implements EmpresaInt {
             while (orset.next()) {
                 // Agregar cada registro a la lista
                 empresas.add(parse(orset));
-                log.debug("111111");
             }
             log.debug(empresas.size());
 

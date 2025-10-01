@@ -4,8 +4,6 @@ package com.base.basetomee.organizacion.empresa.infrestructura;
 import com.base.basetomee.exception.ProblemDetails;
 import com.base.basetomee.organizacion.empresa.aplication.EmpresasServInt;
 import com.base.basetomee.organizacion.empresa.dominio.EmpresaRecord;
-import com.base.basetomee.usuario.dominio.usuario;
-import com.base.basetomee.util.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -23,8 +21,6 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @Log4j2
 @Path("/empresas")
@@ -61,49 +57,39 @@ public class EmpresaContorller {
     }
 
 
-    @GET()
+    @GET
     @Path("/listar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON, "application/problem+json"})
+    @Produces(MediaType.APPLICATION_JSON)
 
-    @APIResponse(responseCode = "200", description = "Respuesta Exitosa para listar Empresa.",
-            // CORREGIDO: Usar 'type = SchemaType.ARRAY' y 'implementation'
+    @APIResponse(responseCode = "200", description = "Lista de todos los registros recuperada exitosamente.",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(type = SchemaType.ARRAY, implementation = EmpresaRecord.class)))
-
-    @APIResponse(responseCode = "409", description = "Error de validación datos.",
-            content = @Content(mediaType = "application/problem+json",
-                    schema = @Schema(implementation = ProblemDetails.class)))
-
-    @Operation(summary = "Listar Empresa.", description = "Permite Listar todas las empresas registradas.")
+                    // Usamos 'implementation' para el tipo de objeto individual,
+                    // y 'type = ARRAY' para indicar que se devuelve una lista de ellos.
+                    schema = @Schema(implementation = EmpresaRecord.class, type = SchemaType.ARRAY)))
 
 
-    public Response listEmpresa() {
-        // Llamar al servicio
-        Result<List<EmpresaRecord>> empresaResult = services.getAll();
-        log.debug(empresaResult.isSuccess());
+    @APIResponse(responseCode = "409", description = "Error de  validacion de datos.",
+       content = @Content(mediaType = "application/json",
+            schema =  @Schema(implementation = ProblemDetails.class)))
 
-        // Comprobar el estado de la solicitud de servicio
-        if (empresaResult.isSuccess()) {
-            // Respuesta exitosa (HTTP 200)
-            return Response.ok(empresaResult.get())
-                    .type(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Listar todos los registros.", description = "Permite obtener una lista de todos los registros de la tabla.")
+
+    public Response ListEmpresa() {
+        List<EmpresaRecord> empresaResult = services.getAll().get();
+        log.debug(empresaResult);
+
+        if (empresaResult.isEmpty()){
+            // Responde con 404 si no hay data en empresas
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("No se encontraron empresas.")
                     .build();
-
         } else {
-            // Error (HTTP 409)
-            ProblemDetails problem = createProblemDetailsFrom(empresaResult);
-            log.debug(problem);
-            return Response.status(Response.Status.CONFLICT) // 409
-                    .entity(problem)
-                    .type("application/problem+json")
-                    .build();
+            // Responde con 200 OK si la lista NO está vacía
+            return Response.ok(empresaResult).build();
         }
     }
 
-    private ProblemDetails createProblemDetailsFrom(Result<List<EmpresaRecord>> empresaResult) {
-        return null;
-    }
+
 
     @PATCH()
     @Path("/modificar")

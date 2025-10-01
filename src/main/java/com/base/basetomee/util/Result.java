@@ -4,6 +4,9 @@
  */
 package com.base.basetomee.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  *
  * @author rikurdog31
@@ -11,6 +14,7 @@ package com.base.basetomee.util;
  */
 
 public class Result<E> {
+    private static final Logger log = LogManager.getLogger(Result.class);
     private boolean succe = false;
     private String _Msj;
     private E _resp;
@@ -35,7 +39,9 @@ public class Result<E> {
         return false;
     }
 
-    public E getData() {
-        return null;
+
+
+    public String getError() {
+       return getError();
     }
 }
