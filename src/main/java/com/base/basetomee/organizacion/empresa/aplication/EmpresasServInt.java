@@ -12,6 +12,6 @@ public interface EmpresasServInt {
 
     public Result<List<EmpresaRecord>> getAll();
     public Result<EmpresaRecord> modificar(EmpresaRecord bean);
-    public Result<String> eliminar(String id);
+    public Result<EmpresaRecord> eliminar(String id);
 
 }

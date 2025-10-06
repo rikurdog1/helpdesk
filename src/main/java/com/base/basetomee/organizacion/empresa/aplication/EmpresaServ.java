@@ -43,7 +43,9 @@ public class EmpresaServ implements EmpresasServInt {
     }
 
     @Override
-    public Result<String> eliminar(String id) {
-        return null;
+    public Result<EmpresaRecord> eliminar(String id) {
+        log.debug("Se Invoco el metodo DELETE");
+        Result<EmpresaRecord> delete = empresaRepo.eliminar(id);
+        return new Result<>().OK("true");
     }
 }

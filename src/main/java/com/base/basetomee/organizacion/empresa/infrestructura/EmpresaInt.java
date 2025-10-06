@@ -11,6 +11,6 @@ public interface EmpresaInt {
     public Result<EmpresaRecord> read(String id);
     public Result<EmpresaRecord> update(EmpresaRecord bean);
     public Result<List<EmpresaRecord>> listar();
-    public Result<String> eliminar(String id);
+    public Result<EmpresaRecord> eliminar(String id);
 
 }

@@ -128,8 +128,27 @@ public class EmpresaRepositorio implements EmpresaInt {
     }
 
     @Override
-    public Result<String> eliminar(String id) {
-        return null;
+    public Result<EmpresaRecord> eliminar(String id) {
+        String sql = """
+                    DELETE FROM PUBLIC.EMPRESA WHERE co_emp=?
+                """;
+
+            try (final Connection con = bd.getConnection();
+                PreparedStatement pstmt = con.prepareStatement(sql))
+            {
+                pstmt.setString(1, id);
+                int affectedRow = pstmt.executeUpdate();
+
+            if (affectedRow > 0){
+                return new Result<String>().OK("El registro: " + id + "Ha sido eliminado!");
+            } else{
+                return new Result<String>().Fail("No se encontro el id: "+ id);
+            }
+
+            }catch (Exception e){
+                log.error(e.getMessage());
+                return new Result<String>().Fail(e.getMessage());
+            }
     }
 
 
