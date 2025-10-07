@@ -4,8 +4,11 @@
  */
 package com.base.basetomee.util;
 
+import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.sql.SQLException;
 
 /**
  *
@@ -18,7 +21,8 @@ public class Result<E> {
     private boolean succe = false;
     private String _Msj;
     private E _resp;
-    
+
+
     public Result OK(E resp){
         this._resp = resp;
         this.succe = true;
@@ -35,6 +39,7 @@ public class Result<E> {
     public E get(){return this._resp;}
     public String getMsj(){return this._Msj;}
 
+
     public boolean isSuccess() {
         return false;
     }
@@ -44,4 +49,6 @@ public class Result<E> {
     public String getError() {
        return getError();
     }
+
+
 }
