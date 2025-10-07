@@ -2,6 +2,7 @@ package com.base.basetomee.organizacion.area.infrestructura;
 import com.base.basetomee.organizacion.area.dominio.AreaRecord;
 import com.base.basetomee.util.Result;
 import jakarta.annotation.Resource;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.log4j.Log4j2;
 
 import javax.sql.DataSource;
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -93,7 +95,32 @@ public class AreaRepositorio implements AreaInt {
 
     @Override
     public Result<List<AreaRecord>> listar() {
-        return null;
+        String sql = """
+                    SELECT *FROM PUBLIC.AREA
+                """;
+        //Iniciar la lista para listar todas las areas
+        List<AreaRecord> areas = new ArrayList<>();
+
+        try(final Connection con = bd.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql)){
+
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()){
+                    //Rcorre todos los registros
+                    areas.add(parse(rs));
+                }
+                log.debug(areas.size());
+
+            // Devolver la lista COMPLETA como resultado exitoso (HTTP 200)
+            // La lista puede ser vacía si no hay registros, ¡lo cual es OK!
+            return new Result<List<AreaRecord>>().OK(areas);
+            //Capturar la exepcion enn caso de existir
+        }catch (SQLException e){
+            log.error(e.getMessage());
+            return new Result<List<AreaRecord>>().Fail(e.getMessage());
+        }
+
     }
 
     @Override

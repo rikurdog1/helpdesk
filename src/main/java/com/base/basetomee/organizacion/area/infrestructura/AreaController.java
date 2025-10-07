@@ -11,11 +11,14 @@ import jakarta.ws.rs.core.Response;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
+import java.util.List;
 
 @Log4j2
 @Path("/area")
@@ -52,6 +55,36 @@ public class AreaController {
             }
             return  Response.ok(result.get()).type(MediaType.APPLICATION_JSON).build();
         }
+
+        @GET()
+        @Path("/listar")
+        @Produces(MediaType.APPLICATION_JSON)
+
+        @APIResponse(responseCode = "200", description = "Lista de la tabla area",
+           content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = AreaRecord.class, type = SchemaType.ARRAY)))
+
+        @APIResponse(responseCode = "409", description ="Error de validacion",
+            content = @Content(mediaType = "application/json",
+               schema = @Schema(implementation = ProblemDetails.class )))
+
+        @Operation(summary = "Listar todos los registros de la tabla Area", description = "Permite obtener la lista de todos los registros")
+
+
+
+        public Response listAll(){
+            List<AreaRecord> areaResult = services.getAll().get();
+            log.debug(areaResult);
+
+            if (areaResult.isEmpty()){
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("No se encontro registros en la tabla area")
+                        .build();
+            }else {
+                return Response.ok(areaResult).build();
+            }
+        }
+
 
         //Metodo para modificacion
         @PATCH()

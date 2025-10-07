@@ -26,7 +26,8 @@ public class AreaServ implements AreaServInt {
 
     @Override
     public Result<List<AreaRecord>> getAll() {
-        return null;
+        log.debug("Se invoco al metodo Listar Area");
+        return AreaRepo.listar();
     }
 
     @Override
