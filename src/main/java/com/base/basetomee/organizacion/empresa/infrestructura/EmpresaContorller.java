@@ -21,7 +21,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.postgresql.util.PSQLException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Log4j2
@@ -53,7 +55,16 @@ public class EmpresaContorller {
 
         log.debug(bean.co_emp());
 
-        EmpresaRecord empresaRecord = services.nuevo(bean).get();
+        var result = services.nuevo(bean);
+
+        if (!result.IsSuccess()){
+
+            return Response.status(400)
+                    .entity(result.getMsj())
+                    .build();
+
+        }
+       // EmpresaRecord empresaRecord = services.nuevo(bean).get();
 
         return  Response.ok(bean).type(MediaType.APPLICATION_JSON).build();
     }

@@ -30,7 +30,7 @@ public class constrViolatExcepMapper implements ExceptionMapper<ConstraintViolat
     }
 
     protected ProblemDetails preparMensaje(ConstraintViolationException e) {
-        log.error("Desde el error de ConstraintViolationException 1");
+        log.error("Desde el error de ConstraintViolationException 1: ",  e);
 
         // Recopila todos los mensajes de violación de restricciones en un solo String
         String validationDetails = e.getConstraintViolations().stream()

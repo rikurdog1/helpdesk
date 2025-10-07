@@ -35,7 +35,6 @@ public record EmpresaRecord(
         String st_estado,
 
         @Schema(description = "Fecha de Registro: ", required = true, example = "2025-09-15", hidden = false)
-        @NotNull(message = "La fecha de Registro no puede quedar vacia")
         @JsonbProperty("fe_registro")
         String fe_registro,
 
