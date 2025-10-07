@@ -44,17 +44,13 @@ public class AreaController {
 
         public Response getDPT(@Valid AreaRecord bean) {
 
-        var resul = services.nuevo(bean);
-            if(!resul.IsSuccess()) {
-                return Response.status(409).type(MediaType.APPLICATION_JSON)
-                        .entity(ProblemDetails.builder().type(5)
-                                .detail(resul.getMsj())
-                                .title("Web Error")
-                                .status(409)
-                                .build()).build();
+        var result = services.nuevo(bean);
+            if(!result.IsSuccess()) {
+                return Response.status(400)
+                        .entity(result.getMsj())
+                        .build();
             }
-
-            return  Response.ok(resul.get()).type(MediaType.APPLICATION_JSON).build();
+            return  Response.ok(result.get()).type(MediaType.APPLICATION_JSON).build();
         }
 
         //Metodo para modificacion

@@ -15,7 +15,7 @@ public record EmpresaRecord(
         //Anotaciones para validar Codigo de Empresa
 
         @Schema(description = "Codigo Empresa:", required = true, example = "J1234567890", hidden = false)
-        @Size(min = 7, max = 13, message = "Codigo Empresa: debe contener un rango de (6) digitos")
+        @Size(min = 7, max = 15, message = "Codigo Empresa: debe contener un rango comprendido entre 7 y 14 caracteres")
         @NotNull(message = "Codigo Empresa: no puede estar vacio.")
         @JsonbProperty("co_emp")
         String co_emp,
@@ -48,7 +48,7 @@ public record EmpresaRecord(
 ) {
 
     //Metodo para generar un codigo randon para Empresa
-    static public EmpresaRecord GeneradorCodEmpresa(EmpresaRecord bean){
+    static public EmpresaRecord loadEmpresa(EmpresaRecord bean){
 
         return new EmpresaRecord(
                 bean.co_emp , bean.nb_emp,"ACTIVO", bean.fe_registro, bean.autor

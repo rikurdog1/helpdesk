@@ -18,8 +18,6 @@ public class AreaRepositorio implements AreaInt {
 
     @Override
     public Result<AreaRecord> registrar(AreaRecord bean) {
-
-        log.debug("222222");
         String sql = """
                         INSERT INTO PUBLIC.AREA (nb_area, co_empresa, st_area)
                         VALUES(?,?,?)

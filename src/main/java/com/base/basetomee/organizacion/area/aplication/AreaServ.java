@@ -16,8 +16,8 @@ public class AreaServ implements AreaServInt {
 
     @Override
     public Result<AreaRecord> nuevo(AreaRecord bean) {
-        log.debug("Se esta quedando en AreaServ");
-        return AreaRepo.registrar(bean);
+        log.debug("Se Invoco el metodo Insert en AreaServ");
+        return AreaRepo.registrar(AreaRecord.loadArea(bean));
     }
 
     @Override

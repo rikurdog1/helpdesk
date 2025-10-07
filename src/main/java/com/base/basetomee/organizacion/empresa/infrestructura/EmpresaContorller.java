@@ -51,13 +51,9 @@ public class EmpresaContorller {
 
     @Operation(summary = "Registrar Empresa.", description = "Permite registrar una nueva empresa.")
 
-
-
     public Response getEmpresa(@Valid EmpresaRecord bean) {
 
         log.debug(bean.co_emp());
-
-
         var result = services.nuevo(bean);
         if (!result.IsSuccess()){
             return Response.status(400)
